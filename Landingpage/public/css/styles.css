@@ -1,0 +1,105 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css");
+/*@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");*/
+
+
+body {
+    background-image: url('../imgs/bubble1.jpeg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    min-width: 90%;
+    overflow-x: hidden;
+}
+
+.mask-img {
+    background-color: #551055da;
+    width: inherit;
+    padding-bottom: 10px;
+    height: fit-content;
+    /* max-height: 190vh; */
+    /* min-height: 1070vh; */
+
+}
+
+.marquee-container {
+    margin-top: 400px;
+    background-color: #700470a6;
+    padding: 15px;
+}
+
+.list-text {
+    font-size: 1.6rem;
+    font-weight: 800;
+}
+
+
+
+.saturate {
+    filter: saturate(2);
+}
+
+.grayscale {
+    filter: grayscale(40%);
+}
+
+.contrast {
+    filter: contrast(160%);
+}
+
+.brightness {
+    filter: brightness(0.25);
+}
+
+.blur {
+    filter: blur(2px);
+}
+
+.invert {
+    filter: invert(10%);
+}
+
+.sepia {
+    filter: sepia(60%);
+}
+
+.huerotate {
+    filter: hue-rotate(594deg);
+}
+
+.rss.opacity {
+    filter: opacity(50%);
+}
+
+/* Rel code Filter */
+.img-filter {
+    filter: invert(2%) grayscale(90%) sepia(60%) saturate(100) hue-rotate(304deg) brightness(65%) contrast(147%);
+
+}
+
+.img-filter2 {
+    filter: invert(10%) grayscale(40%) sepia(40%) saturate(2) hue-rotate(294deg) brightness(70%) contrast(117%);
+
+}
+
+.sub-head {
+    font-size: 50px;
+    font-weight: 700;
+}
+.sub-text {
+    font-size: large;
+    font-weight: 500;
+}
+
+.heading1 {
+    font-size: 4rem;
+    font-weight: 800;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.text-light-purple{
+    color: #ff80ff !important;
+}

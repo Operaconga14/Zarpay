@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+body{
+    background-color: #cc08cc;
+}
+
+$purple: #6c5ce7; // Purple base color
+
+.btn-purple {
+  @include button-variant($purple, $purple, $white);
+  border: none;
+
+  &:hover {
+    background-color: darken($purple, 10%);
+    border-color: darken($purple, 10%);
+  }
+
+  &:active {
+    background-color: darken($purple, 20%);
+    border-color: darken($purple, 20%);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba($purple, 0.5);
+  }
+}

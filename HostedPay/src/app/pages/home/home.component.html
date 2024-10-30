@@ -1,0 +1,153 @@
+<div class="row m-2 p-2">
+    <div 
+        class="col-12 h-75 d-flex justify-content-center align-items-center" 
+        *ngIf="!order || !blockChains || !allCurrencies"
+        style="height: 50vh !important;"
+    >
+        <h3>Loading ...</h3>
+    </div>
+    
+    <div class="col-12 d-flex justify-content-center align-items-center " *ngIf="order && blockChains && allCurrencies">
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-4" >
+                    <h3>Paying {{order.storeAmount | number: '0.00'}} {{getCurrencySymbol(order.storeCurrencyId)}}</h3>
+                </div>
+        
+                <div *ngIf="order.status=='Cancelled'">
+                    <h3>Order was cancelled</h3>
+                    <button class="btn btn-danger px-3 py-2 m-1" (click)="backToMerchantPage()">Go Back to Merchant Site</button>
+                </div>
+        
+                <div *ngIf="order.status=='Refunded'">
+                    <h3>Order was cancelled and refunded</h3>
+                    <button class="btn btn-danger px-3 py-2 m-1" (click)="backToMerchantPage()">Go Back to Merchant Site</button>
+                </div>
+
+                <div *ngIf="order.status=='Expired'">
+                    <h3>Order has expired</h3>
+                    <button class="btn btn-danger px-3 py-2 m-1" (click)="backToMerchantPage()">Go Back to Merchant Site</button>
+                </div>
+        
+                <div *ngIf="order.status=='Error'">
+                    <h3>Order had an error</h3>
+                    <button class="btn btn-danger px-3 py-2 m-1" (click)="backToMerchantPage()">Go Back to Merchant Site</button>
+                </div>
+        
+                <div *ngIf="order.status=='Invalid'">
+                    <h3>Order was invalid</h3>
+                    <button class="btn btn-danger px-3 py-2 m-1" (click)="backToMerchantPage()">Go Back to Merchant Site</button>
+                </div>
+        
+                <div *ngIf="order.status=='Paid'">
+                    <h3 class="alert alert-success">Order was paid Successfully</h3>
+                    <button class="btn btn-success px-3 py-2 m-1" (click)="backToMerchantPage()">Go Back to Merchant Site</button>
+                </div>
+
+                <div class="d-flex justify-content-center align-items-center my-3 " *ngIf="!(w3s.account$ | async)">
+                    <app-w3m-core-button-wrapper></app-w3m-core-button-wrapper>
+                </div>
+        
+                <div *ngIf="(w3s.account$ | async) && blockChains && (order.status=='Initialized' || order.status=='Pending' || order.status=='AwaitingConfirmation')">
+                    <h4>Select a Blockchain</h4>
+
+                    
+                    
+        
+                    <div *ngIf="!selectedBlockchain" class="d-flex justify-content-start">
+                        <button class="btn btn-purple px-2 m-2" *ngFor="let chain of blockChains" (click)="selectBlockchain(chain)">
+                            {{chain.name }}
+                        </button>
+                    </div>
+                    
+                    <div *ngIf="selectedBlockchain">
+                        <button (click)="backToBlockChainlist()" class="btn btn-purple px-2 m-2" >&lt; Back</button>
+                        <span class="ms-2">Using {{selectedBlockchain.name}}</span>
+                        <div class="mt-4">
+                            <h4>Select Currency</h4>
+        
+                            <div *ngIf="!selectedCurrency" class="my-2">
+                                <div class="px-2 m-2" *ngFor="let currency of supportedCurrencies" >
+                                    {{(currency.rate * order.baseAmount) | number: '0.0-9' }} {{currency.symbol}}
+        
+                                    <!-- Pay With {{currency.name }} ({{currency.symbol}})  -->
+                                    <button class="btn btn-purple px-2 m-2"  (click)="previewPayment(currency)">
+                                        Pay with {{currency.symbol}}
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div *ngIf="selectedCurrency" class="mt-4">
+                                <div class="mb-1">
+                                    <button (click)="backToCurrencyList()" class="btn btn-primary px-2 m-2" >&lt; Back</button>
+                                    <div><b>You are paying:</b> {{(selectedCurrency.rate * order.baseAmount) | number: '0.0-9' }} {{selectedCurrency.symbol}} </div>
+                                </div>
+
+                                <div class="my-2">
+                                    <div><b>TX Fee:</b> {{(selectedCurrency.rate * order.txFeeInBaseCurrency) | number: '0.0-18' }} {{selectedCurrency.symbol}}</div>
+
+                                    <div class="d-flex justify-content-start align-items-center"><h5 class="me-2">Your Total:</h5> {{(selectedCurrency.rate * order.totalInBaseCurrency) | number: '0.0-18' }} {{selectedCurrency.symbol}}</div>
+                                    
+                                </div>
+                                
+                                <h5 class="alert alert-info my-2 mt-4" style="font-size: 0.75rem;">Ensure your wallet is connected to the {{w3s.getChainName(selectedBlockchain.id)}} </h5>
+                                <h5  class="alert alert-info my-2 mb-4"  style="font-size: 0.75rem;">You will be asked to Approve our Contract for {{selectedCurrency.symbol}} if your allowance is needed  </h5>
+        
+                                <div class="row">
+                                    <div class="card col-12 col-md-6">
+                                        <div class="card-body row">
+                                            <div *ngIf="!web3State || !web3State.selectedNetworkId" class="col-12  d-flex justify-content-center align-items-center p-2 mb-1">
+                                        
+                                                <button [disabled]="web3State && !web3State.selectedNetworkId" (click)="showW3Modal()" class="btn btn-purple px-2 m-2 w-75" >Connect Wallet</button>
+                                            </div>
+                                            <div class="col-12  d-flex justify-content-center align-items-center p-2 mb-1">
+        
+                                                <button [disabled]="!web3State || !web3State.selectedNetworkId" (click)="payWithCurrency(selectedCurrency)" class="btn btn-purple px-2 m-2 w-75" >Pay Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-1  p-2 d-flex justify-content-center align-items-center">
+                                        <b>OR</b>
+                                    </div>
+                                    <div class="card card-body col-12 col-md-4 ms-md-2 mt-1 d-flex justify-content-center align-items-center">
+                                        <div>
+                                            <h4 class="my-2">Scan to Pay</h4>
+
+                                            <img *ngIf="qrImage" [src]="qrImage" alt="Red dot" class="img-fluid" style="height: 360px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<ng-template #tokenApprovalModal let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Approve Zarpay to Charge your Token</h4>
+		
+	</div>
+	<div class="modal-body">
+		<div class="d-flex m-1 p-1 justify-content-center align-items-center">
+      <div>
+        <h3>You will be prompted to approve Zarpay to withdraw the required tokens from your wallet</h3>
+        
+      </div>
+    </div>
+	</div>
+	<div class="modal-footer">
+        <button (click)="modal.dismiss('dismiss')" class="btn btn-outline-dark">
+            Cancel
+        </button>
+		<button type="button" class="btn btn-outline-dark" (click)="modal.close('approve')">Ok</button>
+	</div>
+</ng-template>

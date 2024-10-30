@@ -1,0 +1,36 @@
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+<ngx-spinner type="ball-scale-multiple" size = "medium"><p style="color: black" > Working... </p></ngx-spinner>
+
+<main class="main d-flex justify-content-center align-items-center " >
+  
+  <div class="container ">
+    <div class="row d-flex justify-content-center align-items-center mt-3">
+      <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
+        <div class="card card-body px-3 py-3">
+          <div class="row">
+            <div class="col-12  mt-4 px-2">
+              <h1 class="text-center my-2" style="color: #a612a6">Checkout with ZarPay</h1>
+              <h3  class="text-center my-2">Pay with Crypto 🎉</h3>
+
+              <div class="d-flex justify-content-center align-items-center my-3 " *ngIf="!(w3s.account$ | async)">
+                <app-w3m-core-button-wrapper></app-w3m-core-button-wrapper>
+              </div>
+              
+            </div>
+      
+            <div class="col-12 mt-4 px-2">
+              <router-outlet />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+
+
+  
+</main>
+
+
